@@ -35,6 +35,7 @@ public class PrisonBreakDebug {
 
     static boolean skip = false;
     static boolean skipAnimation = false;
+    static boolean shouldMurMur = true;
 
     static String[] attrNames = new String[]{lang.getString("health"), lang.getString("energy"), lang.getString("weapon"), lang.getString("money"), lang.getString("food")};
     static Random ra = new Random();
@@ -85,7 +86,7 @@ public class PrisonBreakDebug {
         illegalMove = "\n" + stars + "\n" + lang.getString("unsupported_move") + "\n" + stars + "\n";
     }
 
-    private static void beforeWelcome(){
+    private static void beforeWelcome() {
         System.out.println("\n");
         for (String s : Arrays.asList("welcome_commemorate", "continue")) {
             System.out.println(lang.getString(s));
@@ -97,23 +98,23 @@ public class PrisonBreakDebug {
 
     private static void animateIntroduce() throws InterruptedException {
         skip = false;
-        Thread thread = new Thread(()->{
-            while (!skip){
+        Thread thread = new Thread(() -> {
+            while (!skip) {
                 Scanner scanner = new Scanner(System.in);
                 scanner.next();
-               skipAnimation = true;
-               skip = true;
-           }
+                skipAnimation = true;
+                skip = true;
+            }
         });
         thread.start();
-        for(int i=1;i<=9;++i){
-            if(!skipAnimation){
+        for (int i = 1; i <= 9; ++i) {
+            if (!skipAnimation) {
                 System.out.println("\n" + lang.getString("welcome_intro_" + i));
                 System.out.println(lang.getString("skip"));
                 Thread.sleep(1000L);
-            }else break;
+            } else break;
         }
-        if(!skipAnimation){
+        if (!skipAnimation) {
             System.out.println("\n" + lang.getString("welcome_enjoy"));
             System.out.println(lang.getString("continue"));
             Thread.sleep(1000L);
@@ -134,18 +135,33 @@ public class PrisonBreakDebug {
         if ("1".equals(typeIn)) {
             animateIntroduce();
             welcome();
-        } else if("2".equals(typeIn)){
+        } else if ("2".equals(typeIn)) {
             System.out.println("\n" + lang.getString("game_start"));
             System.out.println(lang.getString("continue"));
             scanner.next();
             System.out.println("\n");
-        }else if("3".equals(typeIn)){
+        } else if ("3".equals(typeIn)) {
             helper();
             welcome();
-        }else if("4".equals(typeIn)){
+        } else if ("4".equals(typeIn)) {
             lang = language();
             welcome();
-        } else if("5".equals(typeIn)){
+        } else if ("5".equals(typeIn)) {
+            System.out.println("\n" + lang.getString("confirm_exit"));
+            System.out.println(lang.getString("back"));
+            typeIn += scanner.next();
+            System.out.println();
+            if ("51".equals(typeIn)) {
+                System.out.println(lang.getString("wise_choose"));
+                Thread.sleep(1000L);
+                welcome();
+            }
+            if (ra.nextInt(2) == 1) {
+                System.out.println(lang.getString("sneer1"));
+            } else {
+                System.out.println(lang.getString("sneer2"));
+            }
+            Thread.sleep(1500L);
             System.exit(0);
         } else {
             System.out.println(illegalMove);
@@ -216,6 +232,14 @@ public class PrisonBreakDebug {
         } else if ("3".equals(typeIn)) {
             attrNum = new int[]{9, 8, 8, 5, 6};
             return lang.getString("steven");
+        } else if ("4".equals(typeIn)) {
+            attrNum = new int[]{
+                    ra.nextInt(3) + 9,
+                    ra.nextInt(4) + 9,
+                    ra.nextInt(3),
+                    ra.nextInt(4) + 8,
+                    ra.nextInt(4) + 9};
+            return lang.getString("player");
         } else {
             attrNum = new int[]{10, 10, 0, 10, 10};
             return lang.getString("player");
@@ -278,7 +302,10 @@ public class PrisonBreakDebug {
             System.out.println(lang.getString("event_info_1") + eventName[target] + lang.getString("event_info_2"));
             System.out.println(lang.getString("event_info_3") + eventChoose[0] + lang.getString("event_info_4") + eventChoose[1] + lang.getString("event_info_5"));
             Scanner scanner = new Scanner(System.in);
+            shouldMurMur = true;
+            murmur();
             String typeIn = scanner.next();
+            shouldMurMur = false;
             int isTwo;
             if ("1".equals(typeIn)) {
                 isTwo = 0;
@@ -302,10 +329,13 @@ public class PrisonBreakDebug {
         while (currPackage > packageLimit) {
             System.out.println("\n" + lang.getString("package_limit_1"));
             Scanner scanner = new Scanner(System.in);
+            shouldMurMur = true;
+            murmur();
             System.out.println(lang.getString("package_limit_2"));
             String typeIn = scanner.next();
             System.out.println(lang.getString("package_limit_3"));
             int typeInInt = scanner.nextInt();
+            shouldMurMur = false;
             byte type = -1;
             switch (typeIn.hashCode()) {
                 case 102:
@@ -432,7 +462,10 @@ public class PrisonBreakDebug {
         while (true) {
             System.out.println(lang.getString("main_1"));
             Scanner scanner = new Scanner(System.in);
+            shouldMurMur = true;
+            murmur();
             String typeIn = scanner.next();
+            shouldMurMur = false;
             int target = 0;
             int secondTypeIn;
             int callBack;
@@ -503,7 +536,10 @@ public class PrisonBreakDebug {
                     } else {
                         System.out.println(lang.getString("main_5"));
                         secondScanner = new Scanner(System.in);
+                        shouldMurMur = true;
+                        murmur();
                         secondTypeIn = secondScanner.nextInt();
+                        shouldMurMur = false;
                         int shouldHeal = secondTypeIn;
                         if (secondTypeIn > attrNum[1]) {
                             secondTypeIn = attrNum[1] + 1;
@@ -520,7 +556,10 @@ public class PrisonBreakDebug {
                 } else {
                     System.out.println(lang.getString("main_6"));
                     secondScanner = new Scanner(System.in);
+                    shouldMurMur = true;
+                    murmur();
                     secondTypeIn = secondScanner.nextInt();
+                    shouldMurMur = false;
                     int shouldEat = secondTypeIn;
                     if (secondTypeIn > attrNum[4]) {
                         secondTypeIn = attrNum[4] + 1;
@@ -932,4 +971,25 @@ public class PrisonBreakDebug {
         goUp = false;
     }
 
+    private static void murmur() {
+        Thread thread = new Thread(() -> {
+            murmurLabel:
+            while (shouldMurMur) {
+                long time = ra.nextLong(1000L) + 2500L;
+                for (int i = 0; i < time; ++i) {
+                    try {
+                        Thread.sleep(10L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (!shouldMurMur) {
+                        break murmurLabel;
+                    }
+                }
+                int chance = ra.nextInt(10) + 1;
+                System.out.println(lang.getString("murmur") + lang.getString("murmur_" + chance));
+            }
+        });
+        thread.start();
+    }
 }
