@@ -325,7 +325,7 @@ public class PrisonBreakDebug {
     }
 
     private static void packageLimit() {
-        int currPackage = attrNum[2] * 2 + attrNum[3] / 5 + attrNum[4] * 3 / 2;//floor?
+        int currPackage = attrNum[2] * 2 + attrNum[3] / 5 + attrNum[4] * 3 / 2;
         while (currPackage > packageLimit) {
             System.out.println("\n" + lang.getString("package_limit_1"));
             Scanner scanner = new Scanner(System.in);
@@ -359,6 +359,7 @@ public class PrisonBreakDebug {
                 case 2 -> attrNum[4] -= typeInInt;
                 default -> System.out.println(illegalMove);
             }
+            currPackage = attrNum[2] * 2 + attrNum[3] / 5 + attrNum[4] * 3 / 2;
             if (currPackage > packageLimit) {
                 System.out.println("\n" + lang.getString("package_limit_4"));
             } else {
