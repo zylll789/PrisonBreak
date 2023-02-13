@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class Save {
 
     static String base = "\\save";
-    String path = Objects.requireNonNull(this.getClass().getResource("/")).getPath();
+    String path = ".\\";
 
     private static boolean shouldSave = false;
 

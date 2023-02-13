@@ -32,7 +32,7 @@ public class Read {
     public int playP;
 
 
-    String path = Objects.requireNonNull(this.getClass().getResource("/")).getPath() + "\\save";
+    String path = ".\\" + "\\save";
 
     public int readXML(String filename, ResourceBundle lang) {
         File dic = new File(path);
