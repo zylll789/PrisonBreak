@@ -76,7 +76,6 @@ public class Save {
             file1.mkdirs();
         }
         String filename = testExist(root, path + base, lang);
-        System.out.println("debug");
         if (shouldSave) {
             shouldSave = false;
             assert filename != null;
