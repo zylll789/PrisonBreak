@@ -1,11 +1,9 @@
 import bin.util.Read;
 import bin.util.Save;
 
-import java.util.Locale;
-import java.util.Random;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 
+@SuppressWarnings("BusyWait")
 public class PrisonBreakDebug {
     static String locate = "lib.lang.lang";
     static Locale cn = Locale.CHINA;
@@ -34,6 +32,9 @@ public class PrisonBreakDebug {
     static boolean goUp;
     static int[][] map;
     static int playP;
+
+    static boolean skip = false;
+    static boolean skipAnimation = false;
 
     static String[] attrNames = new String[]{lang.getString("health"), lang.getString("energy"), lang.getString("weapon"), lang.getString("money"), lang.getString("food")};
     static Random ra = new Random();
@@ -86,11 +87,43 @@ public class PrisonBreakDebug {
 
     private static void beforeWelcome(){
         System.out.println("\n");
-        System.out.println(lang.getString("welcome_commemorate"));
-        System.out.println(lang.getString("continue"));
+        for (String s : Arrays.asList("welcome_commemorate", "continue")) {
+            System.out.println(lang.getString(s));
+        }
         Scanner scanner = new Scanner(System.in);
         scanner.next();
         System.out.println("\n");
+    }
+
+    private static void animateIntroduce() throws InterruptedException {
+        skip = false;
+        Thread thread = new Thread(()->{
+            while (!skip){
+                Scanner scanner = new Scanner(System.in);
+                scanner.next();
+               skipAnimation = true;
+               skip = true;
+           }
+        });
+        thread.start();
+        for(int i=1;i<=9;++i){
+            if(!skipAnimation){
+                System.out.println("\n" + lang.getString("welcome_intro_" + i));
+                System.out.println(lang.getString("skip"));
+                Thread.sleep(1000L);
+            }else break;
+        }
+        if(!skipAnimation){
+            System.out.println("\n" + lang.getString("welcome_enjoy"));
+            System.out.println(lang.getString("continue"));
+            Thread.sleep(1000L);
+        }
+        do {
+            Thread.sleep(100L);
+        } while (!skipAnimation);
+        skipAnimation = false;
+        skip = true;
+        System.out.println();
     }
 
     private static void welcome() throws Exception {
@@ -99,36 +132,7 @@ public class PrisonBreakDebug {
         Scanner scanner = new Scanner(System.in);
         String typeIn = scanner.next();
         if ("1".equals(typeIn)) {
-            System.out.println("\n" + lang.getString("welcome_intro_1"));
-            System.out.println(lang.getString("continue"));
-            scanner.next();
-            System.out.println("\n" + lang.getString("welcome_intro_2"));
-            System.out.println(lang.getString("continue"));
-            scanner.next();
-            System.out.println("\n" + lang.getString("welcome_intro_3"));
-            System.out.println(lang.getString("continue"));
-            scanner.next();
-            System.out.println("\n" + lang.getString("welcome_intro_4"));
-            System.out.println(lang.getString("continue"));
-            scanner.next();
-            System.out.println("\n" + lang.getString("welcome_intro_5"));
-            System.out.println(lang.getString("continue"));
-            scanner.next();
-            System.out.println("\n" + lang.getString("welcome_intro_6"));
-            System.out.println(lang.getString("continue"));
-            scanner.next();
-            System.out.println("\n" + lang.getString("welcome_intro_7"));
-            System.out.println(lang.getString("continue"));
-            scanner.next();
-            System.out.println("\n" + lang.getString("welcome_intro_8"));
-            System.out.println(lang.getString("continue"));
-            scanner.next();
-            System.out.println("\n" + lang.getString("welcome_intro_9"));
-            System.out.println(lang.getString("continue"));
-            scanner.next();
-            System.out.println("\n" + lang.getString("welcome_enjoy"));
-            System.out.println(lang.getString("continue"));
-            scanner.next();
+            animateIntroduce();
             welcome();
         } else if("2".equals(typeIn)){
             System.out.println("\n" + lang.getString("game_start"));
@@ -927,4 +931,5 @@ public class PrisonBreakDebug {
         starve = 0;
         goUp = false;
     }
+
 }

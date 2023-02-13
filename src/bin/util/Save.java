@@ -56,19 +56,19 @@ public class Save {
             if (temp.equals("2")) {
                 System.out.println(lang.getString("rename"));
                 temp = scanner.next();
-                shouldSave = true;
-                testExist(temp, path, lang);
+                return testExist(temp, path, lang);
             } else if (!temp.equals("1")) {
-                shouldSave = false;
                 System.out.println(lang.getString("not_save"));
+                return null;
             } else {
                 System.out.println(lang.getString("override_save"));
-                shouldSave = true;
             }
         }
+        shouldSave = true;
         return path + "\\" + name + ".xml";
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void writeXML(String root, int[] attrNum, String playerType, ResourceBundle lang, Integer floor, Integer packageLimit, Integer maxHealth, Integer maxEnergy, Integer starve, Boolean visible, Boolean canInvisible, Boolean ifContinue, Boolean goUp, int[] originalWeight, int[] weight, int[] weightOperator, int[][] map, Integer playP) {
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
         File file1 = new File(path + base);
@@ -76,7 +76,10 @@ public class Save {
             file1.mkdirs();
         }
         String filename = testExist(root, path + base, lang);
+        System.out.println("debug");
         if (shouldSave) {
+            shouldSave = false;
+            assert filename != null;
             File file = new File(filename);
             try {
                 file.createNewFile();
@@ -89,7 +92,7 @@ public class Save {
                 enter(writer);
                 writer.writeStartElement("data");
                 enter(writer);
-                writer.writeStartElement(root);
+                writer.writeStartElement("play");
                 writeElement("player", playerType, writer);
                 saveAttrNum(attrNum, writer);
                 if (lang.equals(ResourceBundle.getBundle("lib.lang.lang", Locale.CHINA))) {
