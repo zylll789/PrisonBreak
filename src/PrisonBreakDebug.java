@@ -274,11 +274,11 @@ public class PrisonBreakDebug {
         }
     }
 
-    private static void attrOperator(int isTwo, int[] attrNum, int[][] attrChange, String[] attrName) {
+    private static void attrOperator(int isTwo, int[] attrNum, int[][] attrChange, String[] attrName) throws InterruptedException {
         attrOperatorRandom(isTwo, attrNum, attrChange, attrName, true);
     }
 
-    private static void attrOperatorRandom(int isTwo, int[] attrNum, int[][] attrChange, String[] attrName, boolean shouldRandom) {
+    private static void attrOperatorRandom(int isTwo, int[] attrNum, int[][] attrChange, String[] attrName, boolean shouldRandom) throws InterruptedException {
         for (int i = 0; i <= 4; ++i) {
             int delta = 0;
             if (attrChange[isTwo][i] != 0) {
@@ -289,15 +289,17 @@ public class PrisonBreakDebug {
                 attrNum[i] += delta;
             }
             if (delta > 0) {
-                System.out.print(attrName[i] + "+" + delta + "=" + attrNum[i] + "   ");
+                System.out.println(attrName[i] + "+" + delta + "=" + attrNum[i] + "   ");
+                Thread.sleep(1000L);
             } else if (delta < 0) {
-                System.out.print(attrName[i] + delta + "=" + attrNum[i] + "   ");
+                System.out.println(attrName[i] + delta + "=" + attrNum[i] + "   ");
+                Thread.sleep(1000L);
             }
         }
         System.out.println("\n");
     }
 
-    private static int eventTrigger(int target, int[][] attrChange, String[] eventChoose, int[][] map) {
+    private static int eventTrigger(int target, int[][] attrChange, String[] eventChoose, int[][] map) throws InterruptedException {
         while (true) {
             System.out.println(lang.getString("event_info_1") + eventName[target] + lang.getString("event_info_2"));
             System.out.println(lang.getString("event_info_3") + eventChoose[0] + lang.getString("event_info_4") + eventChoose[1] + lang.getString("event_info_5"));
@@ -526,10 +528,12 @@ public class PrisonBreakDebug {
                         } else {
                             if ("q".equals(typeIn) || "Q".equals(typeIn)) {
                                 System.out.println(lang.getString("main_3"));
+                                Thread.sleep(1500L);
                                 break;
                             }
                             if ("win".equals(typeIn) && floor >= 150) {
                                 System.out.println(lang.getString("main_4"));
+                                Thread.sleep(1500L);
                                 break;
                             }
                             System.out.println(illegalMove);
