@@ -247,13 +247,15 @@ public class PrisonBreakDebug {
     }
 
     private static void printUI(int[][] map) {
-        System.out.print("\n" + lang.getString("floor") + floor + "       ");
-        int i;
-        for (i = 0; i <= 4; ++i) {
-            System.out.print(attrNames[i] + ":" + attrNum[i] + "  ");
-        }
+        System.out.print("\n" + lang.getString("floor") + floor + "     ");
+        System.out.print(attrNames[0] + ": " + maxHealth*2 + "/" + attrNum[0] + "  ");
+        System.out.print(attrNames[1] + ": " + maxEnergy*2 + "/" + attrNum[1] + "  ");
+        System.out.print(attrNames[2] + ": " + attrNum[2] + "  ");
+        System.out.print(attrNames[3] + ": " + attrNum[3] + "  ");
+        System.out.print(attrNames[4] + ": " + attrNum[4] + "  ");
+        System.out.print(lang.getString("canInvisible") + ":" + canInvisible);
         System.out.println();
-        for (i = 0; i <= 2; ++i) {
+        for (int i = 0; i <= 2; ++i) {
             for (int j = 0; j <= 4; ++j) {
                 System.out.print("|  " + eventName[map[i][j]] + "  ");
             }
