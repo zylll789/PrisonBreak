@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Read {
@@ -24,7 +23,7 @@ public class Read {
     public int[] weight = new int[9];
     public int[] weightOperator = new int[9];
     public boolean visible;
-    public boolean canInvisible;
+    public int canInvisible;
     public boolean ifContinue;
     public int starve;
     public boolean goUp;
@@ -68,7 +67,7 @@ public class Read {
                         this.maxEnergy = Integer.parseInt(reader.getAttributeValue(null, "maxEnergy"));
                         this.starve = Integer.parseInt(reader.getAttributeValue(null, "starve"));
                         this.visible = Boolean.parseBoolean(reader.getAttributeValue(null, "visible"));
-                        this.canInvisible = Boolean.parseBoolean(reader.getAttributeValue(null, "canInvisible"));
+                        this.canInvisible = Integer.parseInt(reader.getAttributeValue(null, "canInvisible"));
                         this.ifContinue = Boolean.parseBoolean(reader.getAttributeValue(null, "ifContinue"));
                         this.goUp = Boolean.parseBoolean(reader.getAttributeValue(null, "goUp"));
                         this.originalWeight[0] = Integer.parseInt(reader.getAttributeValue(null, "originalWeighta"));

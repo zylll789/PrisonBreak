@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -69,7 +68,7 @@ public class Save {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void writeXML(String root, int[] attrNum, String playerType, ResourceBundle lang, Integer floor, Integer packageLimit, Integer maxHealth, Integer maxEnergy, Integer starve, Boolean visible, Boolean canInvisible, Boolean ifContinue, Boolean goUp, int[] originalWeight, int[] weight, int[] weightOperator, int[][] map, Integer playP) {
+    public void writeXML(String root, int[] attrNum, String playerType, ResourceBundle lang, Integer floor, Integer packageLimit, Integer maxHealth, Integer maxEnergy, Integer starve, Boolean visible, Integer canInvisible, Boolean ifContinue, Boolean goUp, int[] originalWeight, int[] weight, int[] weightOperator, int[][] map, Integer playP) {
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
         File file1 = new File(path + base);
         if (!file1.exists()) {

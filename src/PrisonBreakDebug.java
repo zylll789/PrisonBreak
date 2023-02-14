@@ -26,7 +26,7 @@ public class PrisonBreakDebug {
     static int[] weight;
     static int[] weightOperator;
     static boolean visible;
-    static boolean canInvisible = false;
+    static int canInvisible;
     static boolean ifContinue = false;
     static int starve;
     static boolean goUp;
@@ -81,7 +81,7 @@ public class PrisonBreakDebug {
     }
 
     private static void transLang() {
-        eventName = new String[]{player, lang.getString("space8"), lang.getString("guards"), lang.getString("chemists"), lang.getString("priest"), lang.getString("inmate"), lang.getString("cook"), lang.getString("drunkard"), lang.getString("gamblers"), lang.getString("magician")};
+        eventName = new String[]{player, lang.getString("space8"), lang.getString("guards"), lang.getString("chemists"), lang.getString("priest"), lang.getString("inmate"), lang.getString("cook"), lang.getString("drunkard"), lang.getString("gamblers"), lang.getString("magician"), lang.getString("vampires")};
         attrNames = new String[]{lang.getString("health"), lang.getString("energy"), lang.getString("weapon"), lang.getString("money"), lang.getString("food")};
         illegalMove = "\n" + stars + "\n" + lang.getString("unsupported_move") + "\n" + stars + "\n";
     }
@@ -274,10 +274,6 @@ public class PrisonBreakDebug {
         }
     }
 
-    private static void attrOperator(int isTwo, int[] attrNum, int[][] attrChange, String[] attrName) throws InterruptedException {
-        attrOperatorRandom(isTwo, attrNum, attrChange, attrName, true);
-    }
-
     private static void attrOperatorRandom(int isTwo, int[] attrNum, int[][] attrChange, String[] attrName, boolean shouldRandom) throws InterruptedException {
         for (int i = 0; i <= 4; ++i) {
             int delta = 0;
@@ -299,7 +295,7 @@ public class PrisonBreakDebug {
         System.out.println("\n");
     }
 
-    private static int eventTrigger(int target, int[][] attrChange, String[] eventChoose, int[][] map) throws InterruptedException {
+    private static int eventTriggerRandom(int target, int[][] attrChange, String[] eventChoose, int[][] map, boolean shouldRandom) throws InterruptedException {
         while (true) {
             System.out.println(lang.getString("event_info_1") + eventName[target] + lang.getString("event_info_2"));
             System.out.println(lang.getString("event_info_3") + eventChoose[0] + lang.getString("event_info_4") + eventChoose[1] + lang.getString("event_info_5"));
@@ -318,12 +314,16 @@ public class PrisonBreakDebug {
                 }
                 isTwo = 1;
             }
-            attrOperator(isTwo, attrNum, attrChange, attrNames);
+            attrOperatorRandom(isTwo, attrNum, attrChange, attrNames, shouldRandom);
             negPunish();
             packageLimit();
             printUI(map);
             return isTwo;
         }
+    }
+
+    private static int eventTrigger(int target, int[][] attrChange, String[] eventChoose, int[][] map) throws InterruptedException {
+        return eventTriggerRandom(target, attrChange, eventChoose, map, true);
     }
 
     private static void packageLimit() {
@@ -384,8 +384,14 @@ public class PrisonBreakDebug {
     }
 
     private static void weightLine1(int[][] map) {
-        int originalWeightCounter = 0;
         int i;
+        if (floor == 43 || floor == 58) {
+            for (i = 0; i < 5; ++i) {
+                map[0][i] = 10;
+            }
+            return;
+        }
+        int originalWeightCounter = 0;
         for (i = 0; i <= 8; ++i) {
             originalWeightCounter += originalWeight[i];
         }
@@ -519,10 +525,10 @@ public class PrisonBreakDebug {
                 Scanner secondScanner;
                 if (!"e".equals(typeIn) && !"E".equals(typeIn)) {
                     if (!"h".equals(typeIn) && !"H".equals(typeIn)) {
-                        if (("i".equals(typeIn) || "I".equals(typeIn)) && canInvisible) {
+                        if (("i".equals(typeIn) || "I".equals(typeIn)) && canInvisible>0) {
                             System.out.println(lang.getString("main_2"));
                             visible = false;
-                            canInvisible = false;
+                            canInvisible--;
                         } else if ("*".equals(typeIn)) {
                             helper();
                         } else {
@@ -656,12 +662,35 @@ public class PrisonBreakDebug {
                 callBack = eventTrigger(target, attrChange, eventChoose, map);
                 if (1 == callBack) {
                     System.out.println(lang.getString("main_8") + "\n");
-                    canInvisible = true;
+                    canInvisible++;
                 }
+            } else if(10 == target && visible){
+                int temp = 0;
+                for(int i=2;i<=4;++i){
+                    if(attrNum[i]==0){
+                        temp-=5;
+                    }
+                }
+                for(int i=0;i<5;++i){
+                    map[2][i]=1;
+                }
+                map[2][playP]=0;
+                attrChange = new int[][]{{temp,0,-attrNum[2],-attrNum[3],-attrNum[4]},{temp,0,-attrNum[2],-attrNum[3],-attrNum[4]}};
+                eventChoose = new String[]{lang.getString("trade"), lang.getString("seal")};
+                callBack = eventTriggerRandom(target, attrChange, eventChoose, map, false);
+                if(callBack==0){
+                    maxHealth = (int) (maxHealth*1.2);
+                    maxEnergy = (int) (maxEnergy*1.5);
+                } else {
+                    canInvisible+=3;
+                    weight[8]--;
+                }
+                System.out.println(lang.getString("run_away"));
             }
             ifStarve();
             if (attrNum[0] <= 0) {
                 System.out.println(lang.getString("main_9"));
+                Thread.sleep(1500L);
                 break;
             }
         }
@@ -974,6 +1003,7 @@ public class PrisonBreakDebug {
         visible = true;
         starve = 0;
         goUp = false;
+        canInvisible = 0;
     }
 
     private static void murmur() {
