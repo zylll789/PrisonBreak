@@ -480,11 +480,11 @@ public class PrisonBreakDebug {
             int callBack;
             int[][] attrChange;
             String[] eventChoose;
-            if ("l".equals(typeIn)) {
+            if ("l".equals(typeIn) || "L".equals(typeIn)) {
                 changeLang(map);
                 continue;
             }
-            if ("s".equals(typeIn)) {
+            if ("s".equals(typeIn) || "S".equals(typeIn)) {
                 Save save = new Save();
                 save.writeXML(gameName, attrNum, playerType, lang, floor, packageLimit, maxHealth, maxEnergy, starve, visible, canInvisible, ifContinue, goUp, originalWeight, weight, weightOperator, map, playP);
                 Thread.sleep(1000L);
@@ -549,7 +549,15 @@ public class PrisonBreakDebug {
                         secondScanner = new Scanner(System.in);
                         shouldMurMur = true;
                         murmur();
-                        secondTypeIn = secondScanner.nextInt();
+                        String trans = secondScanner.next();
+                        try{
+                            secondTypeIn = Integer.parseInt(trans);
+                        }catch (NumberFormatException e){
+                            System.out.println(illegalMove);
+                            Thread.sleep(1000L);
+                            printUI(map);
+                            continue;
+                        }
                         shouldMurMur = false;
                         int shouldHeal = secondTypeIn;
                         if (secondTypeIn > attrNum[1]) {
@@ -569,7 +577,15 @@ public class PrisonBreakDebug {
                     secondScanner = new Scanner(System.in);
                     shouldMurMur = true;
                     murmur();
-                    secondTypeIn = secondScanner.nextInt();
+                    String trans = secondScanner.next();
+                    try{
+                        secondTypeIn = Integer.parseInt(trans);
+                    }catch (NumberFormatException e){
+                        System.out.println(illegalMove);
+                        Thread.sleep(1000L);
+                        printUI(map);
+                        continue;
+                    }
                     shouldMurMur = false;
                     int shouldEat = secondTypeIn;
                     if (secondTypeIn > attrNum[4]) {
