@@ -29,6 +29,7 @@ public class Read {
     public boolean goUp;
     public int[][] map = new int[3][5];
     public int playP;
+    public int tailorFright;
 
 
     String path = ".\\" + "\\save";
@@ -99,10 +100,11 @@ public class Read {
                         this.weightOperator[8] = Integer.parseInt(reader.getAttributeValue(null, "weightOperatorl"));
                         for (int i = 0; i < 3; ++i) {
                             for (int j = 0; j < 5; ++j) {
-                                this.map[i][j] = Integer.parseInt(reader.getAttributeValue(null, "M"+ i + j));
+                                this.map[i][j] = Integer.parseInt(reader.getAttributeValue(null, "M" + i + j));
                             }
                         }
                         this.playP = Integer.parseInt(reader.getAttributeValue(null, "playP"));
+                        this.tailorFright = Integer.parseInt(reader.getAttributeValue(null, "tailorFright"));
                     }
                 }
             }

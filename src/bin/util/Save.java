@@ -68,7 +68,7 @@ public class Save {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void writeXML(String root, int[] attrNum, String playerType, ResourceBundle lang, Integer floor, Integer packageLimit, Integer maxHealth, Integer maxEnergy, Integer starve, Boolean visible, Integer canInvisible, Boolean ifContinue, Boolean goUp, int[] originalWeight, int[] weight, int[] weightOperator, int[][] map, Integer playP) {
+    public void writeXML(String root, int[] attrNum, String playerType, ResourceBundle lang, Integer floor, Integer packageLimit, Integer maxHealth, Integer maxEnergy, Integer starve, Boolean visible, Integer canInvisible, Boolean ifContinue, Boolean goUp, int[] originalWeight, int[] weight, int[] weightOperator, int[][] map, Integer playP, Integer tailorFright) {
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
         File file1 = new File(path + base);
         if (!file1.exists()) {
@@ -112,6 +112,7 @@ public class Save {
                 saveWeight("weightOperator", weightOperator, writer);
                 saveMap(map, writer);
                 writeElement("playP", playP.toString(), writer);
+                writeElement("tailorFright", tailorFright.toString(), writer);
                 writer.writeEndElement();
                 enter(writer);
                 writer.writeEndElement();

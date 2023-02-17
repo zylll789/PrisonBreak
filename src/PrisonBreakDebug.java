@@ -15,9 +15,11 @@ public class PrisonBreakDebug {
     static String gameName;
     static String playerType;
 
+    static String illegalMove;
     static int[] attrNum = new int[5];
     static String player;
     static String[] eventName;
+    static String[] attrNames;
     static int floor;
     static int packageLimit;
     static int maxHealth;
@@ -32,15 +34,14 @@ public class PrisonBreakDebug {
     static boolean goUp;
     static int[][] map;
     static int playP;
+    static int tailorFright;
 
     static boolean skip = false;
     static boolean skipAnimation = false;
     static boolean shouldMurMur = true;
 
-    static String[] attrNames = new String[]{lang.getString("health"), lang.getString("energy"), lang.getString("weapon"), lang.getString("money"), lang.getString("food")};
     static Random ra = new Random();
     static String stars = "**********************************************";
-    static String illegalMove = "\n" + stars + "\n" + lang.getString("unsupported_move") + "\n" + stars + "\n";
     static boolean needNew = true;
 
     public PrisonBreakDebug() {
@@ -73,6 +74,8 @@ public class PrisonBreakDebug {
             player = lang.getString("mike");
         } else if ("3".equals(playerType)) {
             player = lang.getString("steven");
+        } else if ("zylll".equals(playerType)) {
+            player = lang.getString("test");
         } else {
             player = lang.getString("player");
         }
@@ -81,7 +84,7 @@ public class PrisonBreakDebug {
     }
 
     private static void transLang() {
-        eventName = new String[]{player, lang.getString("space8"), lang.getString("guards"), lang.getString("chemists"), lang.getString("priest"), lang.getString("inmate"), lang.getString("cook"), lang.getString("drunkard"), lang.getString("gamblers"), lang.getString("magician"), lang.getString("vampires")};
+        eventName = new String[]{player, lang.getString("space8"), lang.getString("guards"), lang.getString("chemists"), lang.getString("priest"), lang.getString("inmate"), lang.getString("cook"), lang.getString("drunkard"), lang.getString("gamblers"), lang.getString("magician"), lang.getString("vampires"), lang.getString("tailor")};
         attrNames = new String[]{lang.getString("health"), lang.getString("energy"), lang.getString("weapon"), lang.getString("money"), lang.getString("food")};
         illegalMove = "\n" + stars + "\n" + lang.getString("unsupported_move") + "\n" + stars + "\n";
     }
@@ -145,6 +148,7 @@ public class PrisonBreakDebug {
             welcome();
         } else if ("4".equals(typeIn)) {
             lang = language();
+            transLang();
             welcome();
         } else if ("5".equals(typeIn)) {
             System.out.println("\n" + lang.getString("confirm_exit"));
@@ -210,6 +214,7 @@ public class PrisonBreakDebug {
                 needNew = false;
                 map = read.map;
                 playP = read.playP;
+                tailorFright = read.tailorFright;
             } else {
                 useSave();
             }
@@ -240,6 +245,9 @@ public class PrisonBreakDebug {
                     ra.nextInt(4) + 8,
                     ra.nextInt(4) + 9};
             return lang.getString("player");
+        } else if ("zylll".equals(typeIn)) {
+            attrNum = new int[]{1, 200, 1, 1, 1};
+            return lang.getString("test");
         } else {
             attrNum = new int[]{10, 10, 0, 10, 10};
             return lang.getString("player");
@@ -248,8 +256,8 @@ public class PrisonBreakDebug {
 
     private static void printUI(int[][] map) {
         System.out.print("\n" + lang.getString("floor") + floor + "     ");
-        System.out.print(attrNames[0] + ": " + maxHealth*2 + "/" + attrNum[0] + "  ");
-        System.out.print(attrNames[1] + ": " + maxEnergy*2 + "/" + attrNum[1] + "  ");
+        System.out.print(attrNames[0] + ": " + maxHealth * 2 + "/" + attrNum[0] + "  ");
+        System.out.print(attrNames[1] + ": " + maxEnergy * 2 + "/" + attrNum[1] + "  ");
         System.out.print(attrNames[2] + ": " + attrNum[2] + "  ");
         System.out.print(attrNames[3] + ": " + attrNum[3] + "  ");
         System.out.print(attrNames[4] + ": " + attrNum[4] + "  ");
@@ -425,6 +433,15 @@ public class PrisonBreakDebug {
             originalWeight[1] -= i;
         }
         punishViolence(originalWeight, weightOperator);
+        if (floor >= 28 && floor <= 48) {
+            for (i = 0; i < 5; ++i) {
+                if (ra.nextInt(100) >= tailorFright) {
+                    map[0][i] = 11;
+                    tailorFright += 5;
+                }
+            }
+            tailorFright--;
+        }
     }
 
     private static void punishViolence(int[] originalWeight, int[] weightOperator) {
@@ -488,7 +505,7 @@ public class PrisonBreakDebug {
             }
             if ("s".equals(typeIn) || "S".equals(typeIn)) {
                 Save save = new Save();
-                save.writeXML(gameName, attrNum, playerType, lang, floor, packageLimit, maxHealth, maxEnergy, starve, visible, canInvisible, ifContinue, goUp, originalWeight, weight, weightOperator, map, playP);
+                save.writeXML(gameName, attrNum, playerType, lang, floor, packageLimit, maxHealth, maxEnergy, starve, visible, canInvisible, ifContinue, goUp, originalWeight, weight, weightOperator, map, playP, tailorFright);
                 Thread.sleep(1000L);
                 printUI(map);
                 continue;
@@ -514,8 +531,8 @@ public class PrisonBreakDebug {
             } else if ("8".equals(typeIn)) {
                 target = map[1][playP];
                 ++floor;
-                attrNum[1]--;
                 goUp = true;
+                attrNum[1]--;
                 visible = true;
                 negPunish();
                 for (int i = 2; i >= 1; --i) {
@@ -527,7 +544,7 @@ public class PrisonBreakDebug {
                 Scanner secondScanner;
                 if (!"e".equals(typeIn) && !"E".equals(typeIn)) {
                     if (!"h".equals(typeIn) && !"H".equals(typeIn)) {
-                        if (("i".equals(typeIn) || "I".equals(typeIn)) && canInvisible>0) {
+                        if (("i".equals(typeIn) || "I".equals(typeIn)) && canInvisible > 0) {
                             System.out.println(lang.getString("main_2"));
                             visible = false;
                             canInvisible--;
@@ -552,9 +569,9 @@ public class PrisonBreakDebug {
                         shouldMurMur = true;
                         murmur();
                         String trans = secondScanner.next();
-                        try{
+                        try {
                             secondTypeIn = Integer.parseInt(trans);
-                        }catch (NumberFormatException e){
+                        } catch (NumberFormatException e) {
                             System.out.println(illegalMove);
                             Thread.sleep(1000L);
                             printUI(map);
@@ -580,9 +597,9 @@ public class PrisonBreakDebug {
                     shouldMurMur = true;
                     murmur();
                     String trans = secondScanner.next();
-                    try{
+                    try {
                         secondTypeIn = Integer.parseInt(trans);
-                    }catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.out.println(illegalMove);
                         Thread.sleep(1000L);
                         printUI(map);
@@ -602,6 +619,9 @@ public class PrisonBreakDebug {
                     attrOperatorRandom(0, attrNum, attrChange, attrNames, false);
                     negPunish();
                 }
+            }
+            if (lang.getString("test").equals(player)) {
+                visible = false;
             }
             Thread.sleep(500L);
             if (floor > 150) {
@@ -682,28 +702,39 @@ public class PrisonBreakDebug {
                     System.out.println(lang.getString("main_8") + "\n");
                     canInvisible++;
                 }
-            } else if(10 == target && visible){
+            } else if (10 == target && visible) {
                 int temp = 0;
-                for(int i=2;i<=4;++i){
-                    if(attrNum[i]==0){
-                        temp-=5;
+                for (int i = 2; i <= 4; ++i) {
+                    if (attrNum[i] == 0) {
+                        temp -= 5;
                     }
                 }
-                for(int i=0;i<5;++i){
-                    map[2][i]=1;
+                for (int i = 0; i < 5; ++i) {
+                    map[2][i] = 1;
                 }
-                map[2][playP]=0;
-                attrChange = new int[][]{{temp,0,-attrNum[2],-attrNum[3],-attrNum[4]},{temp,0,-attrNum[2],-attrNum[3],-attrNum[4]}};
+                map[2][playP] = 0;
+                attrChange = new int[][]{{temp, 0, -attrNum[2], -attrNum[3], -attrNum[4]}, {temp, 0, -attrNum[2], -attrNum[3], -attrNum[4]}};
                 eventChoose = new String[]{lang.getString("trade"), lang.getString("seal")};
                 callBack = eventTriggerRandom(target, attrChange, eventChoose, map, false);
-                if(callBack==0){
-                    maxHealth = (int) (maxHealth*1.2);
-                    maxEnergy = (int) (maxEnergy*1.5);
+                if (callBack == 0) {
+                    maxHealth = (int) (maxHealth * 1.2);
+                    maxEnergy = (int) (maxEnergy * 1.5);
                 } else {
-                    canInvisible+=3;
+                    canInvisible += 3;
                     weight[8]--;
                 }
                 System.out.println(lang.getString("run_away"));
+            } else if (11 == target && visible) {
+                attrChange = new int[][]{{0, 0, 0, -9, -1}, {attrNum[0] / 4 + 2, 0, 1, 4, 1}};
+                eventChoose = new String[]{lang.getString("bag_expansion"), lang.getString("raid")};
+                callBack = eventTriggerRandom(target, attrChange, eventChoose, map, true);
+                if (callBack == 0) {
+                    packageLimit = packageLimit * (100 + ra.nextInt(3) + 9) / 100;
+                    tailorFright++;
+                } else {
+                    tailorFright += 3;
+                }
+                System.out.println(lang.getString("tailor_fright"));
             }
             ifStarve();
             if (attrNum[0] <= 0) {
@@ -1022,6 +1053,7 @@ public class PrisonBreakDebug {
         starve = 0;
         goUp = false;
         canInvisible = 0;
+        tailorFright = 89;
     }
 
     private static void murmur() {
