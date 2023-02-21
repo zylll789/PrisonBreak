@@ -14,7 +14,8 @@ import java.util.Scanner;
 public class Save {
 
     static String base = "\\save";
-    String path = ".\\";
+    static String path = ".\\";
+    static String data = "\\data";
 
     private static boolean shouldSave = false;
 
@@ -132,6 +133,37 @@ public class Save {
 
     private static void enter(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeCharacters("\n");
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static void writeData(String[] key) {
+        XMLOutputFactory factory = XMLOutputFactory.newInstance();
+        File file1 = new File(path + data);
+        if (!file1.exists()) {
+            file1.mkdirs();
+        }
+        String filename = path + data + "\\data.xml";
+        File file = new File(filename);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(filename), "UTF-8");
+            writer.writeStartDocument("UTF-8", "1.0");
+            enter(writer);
+            writer.writeStartElement("data");
+            for(int i=0;i<11;i++){
+                writeElement("key_"+i, key[i], writer);
+            }
+            writer.writeEndElement();
+            writer.writeEndDocument();
+            writer.flush();
+            writer.close();
+        } catch (XMLStreamException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 }

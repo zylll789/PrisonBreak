@@ -31,8 +31,9 @@ public class Read {
     public int playP;
     public int tailorFright;
 
-
     String path = ".\\" + "\\save";
+
+    String data = ".\\data\\data.xml";
 
     public int readXML(String filename, ResourceBundle lang) {
         File dic = new File(path);
@@ -112,6 +113,36 @@ public class Read {
             e.printStackTrace();
         }
         return 1;
+    }
+
+    public String[] key = new String[11];
+
+    /*
+    *  TODO:
+    *   4 8 6 e h i q s win * lang
+    *
+    */
+
+    public boolean readData(){
+        File file = new File(data);
+        if (!file.exists()) {
+            return false;
+        }
+        try {
+            XMLStreamReader reader = XMLInputFactory.newFactory().createXMLStreamReader(new FileInputStream(file));
+            while (reader.hasNext()) {
+                if (reader.next() == XMLStreamConstants.START_ELEMENT) {
+                    if ("data".equals(reader.getLocalName())) {
+                        for(int i=0;i<11;++i){
+                            this.key[i] = reader.getAttributeValue(null, "key_"+i);
+                        }
+                    }
+                }
+            }
+        } catch (XMLStreamException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
 }
