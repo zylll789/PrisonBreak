@@ -46,10 +46,10 @@ public class PrisonBreakDebug {
 
     /*
      *  TODO:
-     *   4 8 6 e h i q s win *
-     *
+     *   4 8 6 e h i q s win * langT
+     *   0 1 2 3 4 5 6 7 8   9  10
      */
-    static String[] key = new String[]{"4","6","8","e","h","i","q","s","win","*","2"};
+    static String[] key = new String[]{"4", "6", "8", "e", "h", "i", "q", "s", "win", "*", "2"};
 
     public PrisonBreakDebug() {
     }
@@ -74,7 +74,6 @@ public class PrisonBreakDebug {
         }
         return language();
     }
-
 
 
     private static void changeLang() {
@@ -107,6 +106,25 @@ public class PrisonBreakDebug {
         Scanner scanner = new Scanner(System.in);
         scanner.next();
         System.out.println("\n");
+    }
+
+    private static void introduce() {
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 1; i <= 9; ++i) {
+            if (i == 2) {
+                System.out.println("\n" + lang.getString("welcome_intro_2_1") + key[2] + lang.getString("welcome_intro_2_2") + key[0] + lang.getString("welcome_intro_2_3") + key[1] + lang.getString("welcome_intro_2_4") + key[3] + lang.getString("welcome_intro_2_5") + key[4] + lang.getString("welcome_intro_2_6"));
+                System.out.println(lang.getString("continue"));
+                scanner.next();
+                continue;
+            }
+            System.out.println("\n" + lang.getString("welcome_intro_" + i));
+            System.out.println(lang.getString("continue"));
+            scanner.next();
+        }
+        System.out.println("\n" + lang.getString("welcome_enjoy"));
+        System.out.println(lang.getString("continue"));
+        scanner.next();
+        System.out.println();
     }
 
     private static void animateIntroduce() throws InterruptedException {
@@ -146,7 +164,8 @@ public class PrisonBreakDebug {
         Scanner scanner = new Scanner(System.in);
         String typeIn = scanner.next();
         if ("1".equals(typeIn)) {
-            animateIntroduce();
+            introduce();
+            //animateIntroduce();
             welcome();
         } else if ("2".equals(typeIn)) {
             System.out.println("\n" + lang.getString("game_start"));
@@ -161,7 +180,7 @@ public class PrisonBreakDebug {
             System.out.println(lang.getString("back"));
             typeIn += scanner.next();
             System.out.println();
-            if ("51".equals(typeIn)) {
+            if ("41".equals(typeIn)) {
                 System.out.println(lang.getString("wise_choose"));
                 Thread.sleep(1000L);
                 welcome();
@@ -333,7 +352,6 @@ public class PrisonBreakDebug {
             attrOperatorRandom(isTwo, attrNum, attrChange, attrNames, shouldRandom);
             negPunish();
             packageLimit();
-//            printUI(map);
             return isTwo;
         }
     }
@@ -470,12 +488,12 @@ public class PrisonBreakDebug {
         }
     }
 
-    private static boolean isMore(){
+    private static boolean isMore() {
         Read read = new Read();
         boolean more = read.readData();
-        if(more){
+        if (more) {
             key = read.key;
-            if("1".equals(key[10])){
+            if ("1".equals(key[10])) {
                 lang = CN;
             } else {
                 lang = US;
@@ -488,7 +506,7 @@ public class PrisonBreakDebug {
 
     public static void main(String[] args) throws Exception {
         boolean more = isMore();
-        if(!more){
+        if (!more) {
             lang = language();
             Save.writeData(key);
         }
@@ -514,7 +532,7 @@ public class PrisonBreakDebug {
         transLang();
         while (true) {
             printUI(map);
-            System.out.println(lang.getString("main_1"));
+            System.out.println(lang.getString("main_1_1") + key[6] + lang.getString("main_1_2") + key[7] + lang.getString("main_1_3"));
             Scanner scanner = new Scanner(System.in);
             shouldMurMur = true;
             murmur();
@@ -529,14 +547,13 @@ public class PrisonBreakDebug {
                 changeLang();
                 continue;
             }
-            if ("s".equals(typeIn) || "S".equals(typeIn)) {
+            if (key[7].equals(typeIn)) {
                 Save save = new Save();
                 save.writeXML(gameName, attrNum, playerType, lang, floor, packageLimit, maxHealth, maxEnergy, starve, visible, canInvisible, ifContinue, goUp, originalWeight, weight, weightOperator, map, playP, tailorFright);
                 Thread.sleep(1000L);
-                //printUI(map);
                 continue;
             }
-            if ("4".equals(typeIn)) {
+            if (key[0].equals(typeIn)) {
                 if (0 == playP) {
                     System.out.println(illegalMove);
                     continue;
@@ -546,7 +563,7 @@ public class PrisonBreakDebug {
                     map[2][playP] = 1;
                     --playP;
                 }
-            } else if ("6".equals(typeIn)) {
+            } else if (key[1].equals(typeIn)) {
                 if (4 == playP) {
                     System.out.println(illegalMove);
                     continue;
@@ -556,7 +573,7 @@ public class PrisonBreakDebug {
                     map[2][playP] = 1;
                     ++playP;
                 }
-            } else if ("8".equals(typeIn)) {
+            } else if (key[2].equals(typeIn)) {
                 target = map[1][playP];
                 ++floor;
                 goUp = true;
@@ -570,23 +587,23 @@ public class PrisonBreakDebug {
                 weightLine1(map);
             } else {
                 Scanner secondScanner;
-                if (!"e".equals(typeIn) && !"E".equals(typeIn)) {
-                    if (!"h".equals(typeIn) && !"H".equals(typeIn)) {
-                        if (("i".equals(typeIn) || "I".equals(typeIn)) && canInvisible > 0) {
+                if (!key[3].equals(typeIn)) {
+                    if (!key[4].equals(typeIn)) {
+                        if ((key[5].equals(typeIn)) && canInvisible > 0) {
                             System.out.println(lang.getString("main_2"));
                             visible = false;
                             canInvisible--;
                             continue;
-                        } else if ("*".equals(typeIn)) {
-                            helper();
+                        } else if (key[9].equals(typeIn)) {
+                            menu();
                             continue;
                         } else {
-                            if ("q".equals(typeIn) || "Q".equals(typeIn)) {
+                            if (key[6].equals(typeIn)) {
                                 System.out.println(lang.getString("main_3"));
                                 Thread.sleep(1500L);
                                 break;
                             }
-                            if ("win".equals(typeIn) && floor >= 150) {
+                            if (key[8].equals(typeIn) && floor >= 150) {
                                 System.out.println(lang.getString("main_4"));
                                 Thread.sleep(1500L);
                                 break;
@@ -605,7 +622,6 @@ public class PrisonBreakDebug {
                         } catch (NumberFormatException e) {
                             System.out.println(illegalMove);
                             Thread.sleep(1000L);
-                            //printUI(map);
                             continue;
                         }
                         shouldMurMur = false;
@@ -634,7 +650,6 @@ public class PrisonBreakDebug {
                     } catch (NumberFormatException e) {
                         System.out.println(illegalMove);
                         Thread.sleep(1000L);
-                        //printUI(map);
                         continue;
                     }
                     shouldMurMur = false;
@@ -658,9 +673,9 @@ public class PrisonBreakDebug {
             }
             Thread.sleep(500L);
             if (floor > 150) {
-                System.out.println(lang.getString("main_7"));
+                System.out.println(lang.getString("main_7_1")+key[8]+lang.getString("main_7_2"));
             }
-            if(target != 1){
+            if (target != 1) {
                 printUI(map);
             }
             if (2 == target && visible) {
@@ -734,7 +749,7 @@ public class PrisonBreakDebug {
                 eventChoose = new String[]{lang.getString("magic_switch"), lang.getString("learn_trick")};
                 callBack = eventTrigger(target, attrChange, eventChoose);
                 if (1 == callBack) {
-                    System.out.println(lang.getString("main_8") + "\n");
+                    System.out.println(lang.getString("type_in") + key[5] + lang.getString("main_8") + "\n");
                     canInvisible++;
                 }
             } else if (10 == target && visible) {
@@ -1118,14 +1133,14 @@ public class PrisonBreakDebug {
         Scanner scanner = new Scanner(System.in);
         String typeIn = scanner.next();
         System.out.println();
-        if("1".equals(typeIn)){
+        if ("1".equals(typeIn)) {
             helper();
             menu();
-        } else if ("2".equals(typeIn)){
+        } else if ("2".equals(typeIn)) {
             PrisonBreakDebug.lang = language();
             transLang();
             menu();
-        } else if ("3".equals(typeIn)){
+        } else if ("3".equals(typeIn)) {
             exchangeTypeIn();
             menu();
         }
@@ -1133,15 +1148,14 @@ public class PrisonBreakDebug {
 
     private static int exchangeTypeIn() throws InterruptedException {
         System.out.println();
-        for(int i=1;i<=10;++i){
-            System.out.println(lang.getString("exchangeType_"+i) + key[i-1]);
+        for (int i = 1; i <= 10; ++i) {
+            System.out.println(lang.getString("exchangeType_" + i) + key[i - 1]);
         }
         System.out.println(lang.getString("make_change"));
-        System.out.println(lang.getString("type_in")+key[7]+lang.getString("save_change"));
+        System.out.println(lang.getString("type_in") + key[7] + lang.getString("save_change"));
         Scanner scanner = new Scanner(System.in);
         String typeIn = scanner.next();
-        System.out.println(typeIn);
-        if(typeIn.equals(key[7])){
+        if (typeIn.equals(key[7])) {
             Save.writeData(key);
             return 1;
         }
@@ -1153,7 +1167,7 @@ public class PrisonBreakDebug {
             Thread.sleep(1000L);
             return exchangeTypeIn();
         }
-        if(choose<1||choose>10){
+        if (choose < 1 || choose > 10) {
             System.out.println(illegalMove);
             Thread.sleep(1000L);
         } else {

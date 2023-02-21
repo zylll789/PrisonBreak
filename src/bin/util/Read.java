@@ -105,7 +105,12 @@ public class Read {
                             }
                         }
                         this.playP = Integer.parseInt(reader.getAttributeValue(null, "playP"));
-                        this.tailorFright = Integer.parseInt(reader.getAttributeValue(null, "tailorFright"));
+                        String temp = reader.getAttributeValue(null, "tailorFright");
+                        if(temp==null){
+                            this.tailorFright = 89;
+                        } else {
+                            this.tailorFright = Integer.parseInt(temp);
+                        }
                     }
                 }
             }
