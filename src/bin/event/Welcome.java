@@ -107,7 +107,7 @@ public class Welcome {
             Thread.sleep(1500L);
             System.exit(0);
         } else {
-            System.out.println(illegalMove);
+            System.out.println(player.langOperator.illegalMove);
             Thread.sleep(1000L);
             createWelcome(player);
         }

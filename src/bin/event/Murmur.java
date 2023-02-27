@@ -3,9 +3,10 @@ package bin.event;
 import bin.entity.Player;
 
 import static run.PrisonBreakDebug.ra;
-import static run.PrisonBreakDebug.shouldMurMur;
 
 public class Murmur {
+
+    public static boolean shouldMurMur = true;
 
     @SuppressWarnings("BusyWait")
     public static void createMurmur(Player player) {

@@ -1,6 +1,7 @@
 package bin.util;
 
 import bin.entity.Player;
+import bin.game.ConnectGame;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -27,10 +28,12 @@ public class Client {
     }
 
     @SuppressWarnings({"BusyWait"})
-    public void createClient(InetAddress ip, int port) throws InterruptedException {
+    public void createClient(InetAddress ip, int port) {
         Thread thread = new Thread(()->{
             try {
                 Socket socket = new Socket(ip,port);
+                System.out.println("连接成功！");
+                ConnectGame.hasConnection=true;
                 fromServer = new DataInputStream(socket.getInputStream());
                 toServer = new DataOutputStream(socket.getOutputStream());
             } catch (IOException e) {

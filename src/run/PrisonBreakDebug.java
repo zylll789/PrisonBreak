@@ -5,6 +5,7 @@ import bin.event.Welcome;
 import bin.game.ConnectGame;
 import bin.game.Map;
 import bin.game.SelfGame;
+import bin.util.LangOperator;
 import bin.util.Read;
 import bin.util.Save;
 
@@ -12,21 +13,8 @@ import java.util.*;
 
 @SuppressWarnings("BusyWait")
 public class PrisonBreakDebug {
-    static String locate = "lib.lang.lang";
-    static Locale cn = Locale.CHINA;
-    static Locale us = Locale.US;
-    public static ResourceBundle CN = ResourceBundle.getBundle(locate, cn);
-    public static ResourceBundle US = ResourceBundle.getBundle(locate, us);
-    public static ResourceBundle lang = US;
-
-    public static String[] eventName;
-    public static String[] attrNames;
-
-    public static boolean shouldMurMur = true;
 
     public static Random ra = new Random();
-    public static String stars = "**********************************************";
-    public static String illegalMove = "\n" + stars + "\n" + lang.getString("unsupported_move") + "\n" + stars + "\n";
     public static boolean needNew = true;
 
     /*
@@ -45,9 +33,9 @@ public class PrisonBreakDebug {
         if (more) {
             key = read.key;
             if ("1".equals(key[10])) {
-                player.langOperator.setLang(CN);
+                player.langOperator.setLang(LangOperator.CN);
             } else {
-                player.langOperator.setLang(US);
+                player.langOperator.setLang(LangOperator.US);
             }
             return true;
         } else {
@@ -89,7 +77,7 @@ public class PrisonBreakDebug {
                 ConnectGame.createConnectGame(customPlayer);
                 break;
             } else {
-                System.out.println(illegalMove);
+                System.out.println(customPlayer.langOperator.illegalMove);
                 Thread.sleep(1000L);
             }
         }

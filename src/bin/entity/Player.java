@@ -5,7 +5,6 @@ import bin.util.LangOperator;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-import static run.PrisonBreakDebug.attrNames;
 import static run.PrisonBreakDebug.ra;
 
 public class Player {
@@ -141,7 +140,7 @@ public class Player {
         lifeLimit();
         for (int i = 1; i <= 4; ++i) {
             if (attrNum[i] < 0) {
-                System.out.println(langOperator.getLang().getString("neg_punish_1") + attrNames[i] + langOperator.getLang().getString("neg_punish_2"));
+                System.out.println(langOperator.getLang().getString("neg_punish_1") + langOperator.attrNames[i] + langOperator.getLang().getString("neg_punish_2"));
                 System.out.println(langOperator.getLang().getString("health") + " / 2 = " + attrNum[0] / 2);
                 attrNum[i] = 0;
                 attrNum[0] /= 2;

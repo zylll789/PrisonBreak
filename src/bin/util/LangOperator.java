@@ -1,13 +1,10 @@
 package bin.util;
 
 import bin.entity.Player;
-import run.PrisonBreakDebug;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Scanner;
-
-import static run.PrisonBreakDebug.*;
 
 public class LangOperator {
 
@@ -20,6 +17,11 @@ public class LangOperator {
     ResourceBundle lang;
 
     Player player;
+
+    public String stars = "**********************************************";
+    public String illegalMove;
+    public String[] eventName;
+    public String[] attrNames;
 
     public ResourceBundle getLang() {
         return lang;
@@ -49,7 +51,7 @@ public class LangOperator {
         } else if ("2".equals(langType)) {
             return US;
         } else {
-            System.out.println(PrisonBreakDebug.lang.getString("error_lang") + "\n");
+            System.out.println(this.getLang().getString("error_lang") + "\n");
             try {
                 Thread.sleep(1000L);
             } catch (InterruptedException e) {

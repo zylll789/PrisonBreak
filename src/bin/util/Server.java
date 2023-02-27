@@ -1,12 +1,14 @@
 package bin.util;
 
 import bin.entity.Player;
+import bin.game.ConnectGame;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class Server {
 
@@ -32,6 +34,7 @@ public class Server {
                 System.out.println("等待玩家进入");
                 Socket socket = serverSocket.accept();
                 System.out.println("连接成功！");
+                ConnectGame.hasConnection=true;
                 Thread.sleep(100L);
                 DataInputStream inputStream = new DataInputStream(socket.getInputStream());
                 DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
@@ -42,6 +45,8 @@ public class Server {
                     Thread.sleep(100L);
                 }
 
+            } catch (SocketException e){
+                System.out.println("其它玩家断开连接！");
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }

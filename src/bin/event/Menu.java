@@ -7,8 +7,6 @@ import bin.util.Save;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-import static run.PrisonBreakDebug.illegalMove;
-
 public class Menu {
 
     public static void createMenu(Player player, String[] key) throws Exception {
@@ -26,12 +24,13 @@ public class Menu {
             langOperator.transLang();
             createMenu(player, key);
         } else if ("3".equals(typeIn)) {
-            exchangeTypeIn(player.langOperator.getLang(), key);
+            exchangeTypeIn(player.langOperator, key);
             createMenu(player, key);
         }
     }
 
-    private static int exchangeTypeIn(ResourceBundle lang, String[] key) throws InterruptedException {
+    private static int exchangeTypeIn(LangOperator langOperator, String[] key) throws InterruptedException {
+        ResourceBundle lang = langOperator.getLang();
         System.out.println();
         for (int i = 1; i <= 10; ++i) {
             System.out.println(lang.getString("exchangeType_" + i) + key[i - 1]);
@@ -48,19 +47,19 @@ public class Menu {
         try {
             choose = Integer.parseInt(typeIn);
         } catch (NumberFormatException e) {
-            System.out.println(illegalMove);
+            System.out.println(langOperator.illegalMove);
             Thread.sleep(1000L);
-            return exchangeTypeIn(lang, key);
+            return exchangeTypeIn(langOperator, key);
         }
         if (choose < 1 || choose > 10) {
-            System.out.println(illegalMove);
+            System.out.println(langOperator.illegalMove);
             Thread.sleep(1000L);
         } else {
             System.out.println(lang.getString("type_in_change"));
             String secondTypeIn = scanner.next();
             key[choose - 1] = secondTypeIn;
         }
-        return exchangeTypeIn(lang, key);
+        return exchangeTypeIn(langOperator, key);
     }
 
 }

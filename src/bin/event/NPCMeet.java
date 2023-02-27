@@ -127,24 +127,24 @@ public class NPCMeet {
     public static int eventTriggerRandom(int target, int[][] attrChange, String[] eventChoose, boolean shouldRandom, Player player) throws InterruptedException {
         ResourceBundle lang = player.langOperator.getLang();
         while (true) {
-            System.out.println(lang.getString("event_info_1") + eventName[target] + lang.getString("event_info_2"));
+            System.out.println(lang.getString("event_info_1") + player.langOperator.eventName[target] + lang.getString("event_info_2"));
             System.out.println(lang.getString("event_info_3") + eventChoose[0] + lang.getString("event_info_4") + eventChoose[1] + lang.getString("event_info_5"));
             Scanner scanner = new Scanner(System.in);
-            shouldMurMur = true;
+            Murmur.shouldMurMur = true;
             Murmur.createMurmur(player);
             String typeIn = scanner.next();
-            shouldMurMur = false;
+            Murmur.shouldMurMur = false;
             int isTwo;
             if ("1".equals(typeIn)) {
                 isTwo = 0;
             } else {
                 if (!"2".equals(typeIn)) {
-                    System.out.println(illegalMove);
+                    System.out.println(player.langOperator.illegalMove);
                     continue;
                 }
                 isTwo = 1;
             }
-            attrOperatorRandom(isTwo, player, attrChange, attrNames, shouldRandom);
+            attrOperatorRandom(isTwo, player, attrChange, player.langOperator.attrNames, shouldRandom);
             player.negPunish();
             Limit.packageLimit(player);
             return isTwo;

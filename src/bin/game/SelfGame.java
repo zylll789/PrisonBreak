@@ -22,10 +22,10 @@ public class SelfGame {
             Display.printUI(player);
             System.out.println(lang.getString("main_1_1") + key[6] + lang.getString("main_1_2") + key[7] + lang.getString("main_1_3"));
             Scanner scanner = new Scanner(System.in);
-            shouldMurMur = true;
+            Murmur.shouldMurMur = true;
             Murmur.createMurmur(player);
             String typeIn = scanner.next();
-            shouldMurMur = false;
+            Murmur.shouldMurMur = false;
             int target;
             int secondTypeIn;
             int[][] attrChange;
@@ -37,7 +37,7 @@ public class SelfGame {
             }
             if (key[0].equals(typeIn)) {
                 if (0 == player.playP) {
-                    System.out.println(illegalMove);
+                    System.out.println(player.langOperator.illegalMove);
                     continue;
                 } else {
                     target = player.map[2][player.playP - 1];
@@ -47,7 +47,7 @@ public class SelfGame {
                 }
             } else if (key[1].equals(typeIn)) {
                 if (4 == player.playP) {
-                    System.out.println(illegalMove);
+                    System.out.println(player.langOperator.illegalMove);
                     continue;
                 } else {
                     target = player.map[2][player.playP + 1];
@@ -90,23 +90,23 @@ public class SelfGame {
                                 Thread.sleep(1500L);
                                 break;
                             }
-                            System.out.println(illegalMove);
+                            System.out.println(player.langOperator.illegalMove);
                             continue;
                         }
                     } else {
                         System.out.println(lang.getString("main_5"));
                         secondScanner = new Scanner(System.in);
-                        shouldMurMur = true;
+                        Murmur.shouldMurMur = true;
                         Murmur.createMurmur(player);
                         String trans = secondScanner.next();
                         try {
                             secondTypeIn = Integer.parseInt(trans);
                         } catch (NumberFormatException e) {
-                            System.out.println(illegalMove);
+                            System.out.println(player.langOperator.illegalMove);
                             Thread.sleep(1000L);
                             continue;
                         }
-                        shouldMurMur = false;
+                        Murmur.shouldMurMur = false;
                         int shouldHeal = secondTypeIn;
                         if (secondTypeIn > player.attrNum[1]) {
                             secondTypeIn = player.attrNum[1] + 1;
@@ -117,24 +117,24 @@ public class SelfGame {
                             delta += ra.nextInt(2) + 2;
                         }
                         attrChange = new int[][]{{delta, -secondTypeIn, 0, 0, 0}, {}};
-                        NPCMeet.attrOperatorRandom(0, player, attrChange, attrNames, false);
+                        NPCMeet.attrOperatorRandom(0, player, attrChange, player.langOperator.attrNames, false);
                         player.negPunish();
                         continue;
                     }
                 } else {
                     System.out.println(lang.getString("main_6"));
                     secondScanner = new Scanner(System.in);
-                    shouldMurMur = true;
+                    Murmur.shouldMurMur = true;
                     Murmur.createMurmur(player);
                     String trans = secondScanner.next();
                     try {
                         secondTypeIn = Integer.parseInt(trans);
                     } catch (NumberFormatException e) {
-                        System.out.println(illegalMove);
+                        System.out.println(player.langOperator.illegalMove);
                         Thread.sleep(1000L);
                         continue;
                     }
-                    shouldMurMur = false;
+                    Murmur.shouldMurMur = false;
                     int shouldEat = secondTypeIn;
                     if (secondTypeIn > player.attrNum[4]) {
                         secondTypeIn = player.attrNum[4] + 1;
@@ -145,7 +145,7 @@ public class SelfGame {
                         delta += ra.nextInt(2) + 2;
                     }
                     attrChange = new int[][]{{0, delta, 0, 0, -secondTypeIn}, {}};
-                    NPCMeet.attrOperatorRandom(0, player, attrChange, attrNames, false);
+                    NPCMeet.attrOperatorRandom(0, player, attrChange, player.langOperator.attrNames, false);
                     player.negPunish();
                     continue;
                 }
